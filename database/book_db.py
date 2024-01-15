@@ -1,4 +1,14 @@
-books = [
+from models.book_model import Book
+
+booklist = []
+
+def loadData():
+  for item in JSONBOOKS:
+    booklist.append(Book(**item))
+
+
+
+JSONBOOKS = [
   {
     "author": "Chinua Achebe",
     "country": "Nigeria",
