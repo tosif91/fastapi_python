@@ -1,0 +1,15 @@
+on cmd to run on database (todo)
+- sqlite3 todo.db
+//now sqlite enviorment will start runing
+//you can run queries on this todo database
+
+//tochange view mode of data :
+- .mode table
+//now it will give output in tabular format
+
+//to view all data
+- select * from table_name;
+//to insert data
+- insert into table_name (cl_1,cl_2,...) values (vl1,vl2,...);
+//to delete row in  table
+- delete from table_name where cl_name == value;

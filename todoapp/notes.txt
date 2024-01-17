@@ -1,0 +1,10 @@
+FastApi works with any database.
+But The most common one is ORM (Object Relational Mapping) library
+ORM has tools to map/convert between objects in code and database tables
+with ORM we create class that represent tables in a sql database
+each attribute of a class will represent a column and instance of class will represent a row
+
+
+
+# model.py  =>> should contains sqlalchemy models
+# schema.py =>> should contains pydantic models
