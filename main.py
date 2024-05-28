@@ -1,6 +1,9 @@
 from fastapi import FastAPI
-from routes import user_routes,book_routes
+from routes import user_routes, book_routes
 from auth import auth_service
+from database import Base, engine
+
+Base.metadata.create_all(bind=engine)
 
 
 app = FastAPI()

@@ -1,27 +1,26 @@
-from enum import Enum
-from pydantic import BaseModel,Field
-
-class UserRole(str,Enum):
-    Librarian='Librarian',
-    Member = 'Member'
-
-class Meta(BaseModel):
-    total_book_issued : int|None = 0 
-    total_book_returned :int |None = 0
+import database as db
+from sqlalchemy import Column, Boolean, String, Integer, Float, DateTime, ForeignKey
+from sqlalchemy.orm import Relationship
 
 
-class UserInput(BaseModel):
-    name:str = Field(...,max_length=20,min_length=5,description='user full name' ,examples=['tosif khan'])
-    email:str = Field(...,max_length=40,min_length=5,pattern=r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$',
-        description="User's email address",examples=['tosifmid@gmail.com'] )
-    password:str =Field(...,max_length=10,min_length=6,description='user password',examples=['pwd123'])
-    role:UserRole = Field(...,description='enter user role ie Librarion | Member')
-                          
-class UserData(UserInput):
-    uid:int = Field(gt=0,) 
-    hashed_password:str 
-    meta:Meta = Field(Meta())  
-     
-    
-    
-    
+class UserMetaModel(db.Base):
+    __tablename__ = 'usersmeta'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    totalbookissued = Column(Integer, nullable=True, default=0)
+    totalbookreturned = Column(Integer, nullable=True, default=0)
+
+    uid = Column(Integer, ForeignKey("users.id"), unique=True)
+    user = Relationship("UserModel", back_populates='meta')
+
+
+class UserModel(db.Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
+    name = Column(String(20), index=True)  # indexing done
+    email = Column(String(50), index=True, unique=True)
+    hashed_password = Column(String, nullable=False)
+    role = Column(String(50), nullable=False, index=True)
+
+    meta = Relationship("UserMetaModel", back_populates="user", uselist=False)
+    book_rel = Relationship(
+        "BookModel", back_populates='user_rel', uselist=True)
